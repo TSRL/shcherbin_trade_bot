@@ -1,5 +1,8 @@
 version: '3.8'
 
+volumes:
+  database:
+
 networks:
   trade:
     name: trade
@@ -48,6 +51,10 @@ services:
       - "5432:5432"
     networks:
       trade:
+    volumes:
+      - type: volume
+        source: database
+        target: /var/lib/postgresql/data
 
   redis:
     container_name: redis

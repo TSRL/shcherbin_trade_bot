@@ -27,3 +27,6 @@ migrate: compose_build
 
 shell: compose_build
 	docker-compose run trade_bot python manage.py shell
+
+plug_tg_bot:
+	docker-compose run trade_bot python manage.py createtgbot

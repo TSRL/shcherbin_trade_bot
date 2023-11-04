@@ -8,15 +8,28 @@ asgiref==3.7.2
     # via django
 backports-zoneinfo==0.2.1
     # via django
+certifi==2023.7.22
+    # via requests
+charset-normalizer==3.3.2
+    # via requests
 django==4.2.7
     # via
     #   -r requirements.in
+    #   django-tgbot
     #   djangorestframework
+django-tgbot==2.0.0
+    # via -r requirements.in
 djangorestframework==3.14.0
     # via -r requirements.in
+idna==3.4
+    # via requests
 pytz==2023.3.post1
     # via djangorestframework
+requests==2.31.0
+    # via django-tgbot
 sqlparse==0.4.4
     # via django
 typing-extensions==4.8.0
     # via asgiref
+urllib3==2.0.7
+    # via requests
