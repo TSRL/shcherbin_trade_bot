@@ -1,0 +1,56 @@
+version: '3.8'
+
+networks:
+  trade:
+    name: trade
+    driver: bridge
+
+services:
+  trade_bot:
+    container_name: trade_bot
+    image: trade_bot
+    ports:
+      - "8989:8989"
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - ./trade_bot:/app
+    environment:
+      - DJANGO_SETTINGS_MODULE=trade_bot.settings
+    command: bash start.sh
+    networks:
+      trade:
+
+  #api_service:
+  #  image: api_serivce
+  #  expose:
+  #    - "7002"
+  #  links:
+  #    - postgres
+  #    - redis
+  #  volumes:
+  #    - ./api_service:/app
+  #  command: python /app/manage.py runserver 0:7001
+
+
+  postgres:
+    container_name: postgres
+    restart: always
+    image: postgres:latest
+#    volumes_from:
+#      - data
+    environment:
+      - POSTGRES_PASSWORD=pwd
+      - POSTGRES_USER=tradeuser
+      - POSTGRES_DB=tradedb
+    ports:
+      - "5432:5432"
+    networks:
+      trade:
+
+  redis:
+    container_name: redis
+    image: redis:latest
+    networks:
+      trade:
