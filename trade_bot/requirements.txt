@@ -4,18 +4,42 @@
 #
 #    pip-compile
 #
+anyio==4.0.0
+    # via httpx
 asgiref==3.7.2
     # via django
 backports-zoneinfo==0.2.1
     # via django
+certifi==2023.7.22
+    # via
+    #   httpcore
+    #   httpx
 django==4.2.7
     # via
     #   -r requirements.in
     #   djangorestframework
 djangorestframework==3.14.0
     # via -r requirements.in
+exceptiongroup==1.1.3
+    # via anyio
+h11==0.14.0
+    # via httpcore
+httpcore==1.0.1
+    # via httpx
+httpx==0.25.1
+    # via python-telegram-bot
+idna==3.4
+    # via
+    #   anyio
+    #   httpx
+python-telegram-bot==20.6
+    # via -r requirements.in
 pytz==2023.3.post1
     # via djangorestframework
+sniffio==1.3.0
+    # via
+    #   anyio
+    #   httpx
 sqlparse==0.4.4
     # via django
 typing-extensions==4.8.0
