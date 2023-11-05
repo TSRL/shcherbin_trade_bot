@@ -7,7 +7,7 @@ from asgiref.sync import sync_to_async
 
 from bot.models import Chat, Balance, ArbitraryRequest
 from bot.trades import attempt_purchase, attempt_sell
-from bot.errors import WrongCommand, InsufficientBalance
+from bot.errors import WrongCommand, InsufficientBalance, PriceFetchFail
 from bot.report import generate_report
 from bot.executors import DealExecutorImitator, PriceFetcherSwapZone
 
@@ -23,9 +23,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     logger.info(f'message text being received: {update.message.text} for a chat: {update.effective_chat}')
 
-    user_message = update.message.text
+    user_message = update.message.text.upper()
     elements = user_message.split(" ")
-    first_message = elements[0].upper()
+    first_message = elements[0]
 
     filter_query = await sync_to_async(Chat.objects.filter)(chat_id=update.effective_chat.id)
     exists = await sync_to_async(filter_query.exists)()
@@ -38,7 +38,7 @@ async def message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         current_chat = Chat(chat_id=update.effective_chat.id)
         eth_balance = Balance(coin="ETH", value=100, chat=current_chat)
         btc_balance = Balance(coin="BTC", value=10, chat=current_chat)
-        usdt_balance = Balance(coin="USDT", value=10000, chat=current_chat)
+        usdt_balance = Balance(coin="USDT", value=1000000000, chat=current_chat)
         await sync_to_async(current_chat.save)()
         await sync_to_async(eth_balance.save)()
         await sync_to_async(btc_balance.save)()
@@ -86,5 +86,8 @@ async def message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         response_message = "Unfortunately I could not recognize your command, please try again"
     except InsufficientBalance:
         response_message = "Can not execute trade, not enough funds"
+    except PriceFetchFail as e:
+        response_message = f'Unexpected error when fetching a price: {str(e)}'
+
     await sync_to_async(current_chat.save)()
     await context.bot.send_message(chat_id=update.effective_chat.id, text=response_message)

@@ -9,3 +9,7 @@ class WrongCommand(Exception):
 
 class InsufficientBalance(Exception):
     pass
+
+
+class PriceFetchFail(Exception):
+    pass

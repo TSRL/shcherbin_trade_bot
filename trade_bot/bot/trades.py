@@ -35,8 +35,7 @@ def attempt_purchase(
         raise InsufficientBalance
 
     price = price_fetcher.request_price(selling_token, buying_token)
-
-    if selling_balance.value < amount_purchase * price:
+    if selling_balance.value * price < amount_purchase:
         raise InsufficientBalance
 
     result = deal_executor.execute_trade(selling_token, buying_token, price * amount_purchase)
@@ -47,7 +46,7 @@ def attempt_purchase(
     request.save()
 
     if result:
-        selling_balance.value -= amount_purchase * price
+        selling_balance.value -= amount_purchase / price
         try:
             buying_balance = Balance.objects.get(chat=chat.chat_id, coin=buying_token)
         except ObjectDoesNotExist:
