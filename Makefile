@@ -1,11 +1,17 @@
 build:
 	docker build . -t trade_bot:latest
 
+up_dev:
+	docker-compose -f docker-compose-dev.yaml up
+
 up:
 	docker-compose up
 
 upd:
 	docker-compose up -d
+
+down_dev:
+	docker-compose -f docker-compose-dev.yaml down
 
 down:
 	docker-compose down

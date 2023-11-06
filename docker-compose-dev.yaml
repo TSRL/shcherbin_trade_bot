@@ -17,9 +17,11 @@ services:
     depends_on:
       - postgres
       - redis
+    volumes:
+      - ./trade_bot:/app
     environment:
-      - DJANGO_SETTINGS_MODULE=trade_bot.settings
-    command: bash start-prod.sh
+      - DJANGO_SETTINGS_MODULE=trade_bot.settings-dev
+    command: bash start.sh
     networks:
       trade:
 
