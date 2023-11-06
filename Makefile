@@ -1,9 +1,6 @@
 build:
 	docker build . -t trade_bot:latest
 
-compose_build:
-	docker-compose build
-
 up:
 	docker-compose up
 
