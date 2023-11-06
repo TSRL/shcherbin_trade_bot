@@ -16,13 +16,13 @@ down_dev:
 down:
 	docker-compose down
 
-test: compose_build
-	docker-compose run trade_bot python /app/manage.py test
+test:
+	docker-compose -f docker-compose-dev.yaml run trade_bot python /app/manage.py test
 
-lint: compose_build
+lint:
 	docker-compose run trade_bot flake8 .
 
-check: compose_build lint test
+check: lint test
 	echo "Success"
 
 migrate:

@@ -18,3 +18,5 @@ Now you can communicate with your bot in Telegram!
 
 To stop the bot run ```make down```, don't forget there is a volume with a database,
 you can remove it using ```docker volume rm``` .
+
+To run tests run ```make test```.
