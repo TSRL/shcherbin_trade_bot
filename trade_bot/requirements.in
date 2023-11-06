@@ -1,2 +1,5 @@
 Django
 djangorestframework
+python-telegram-bot
+requests
+python-dotenv

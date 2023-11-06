@@ -1,5 +1,8 @@
 version: '3.8'
 
+volumes:
+  database:
+
 networks:
   trade:
     name: trade
@@ -22,24 +25,14 @@ services:
     networks:
       trade:
 
-  #api_service:
-  #  image: api_serivce
-  #  expose:
-  #    - "7002"
-  #  links:
-  #    - postgres
-  #    - redis
-  #  volumes:
-  #    - ./api_service:/app
-  #  command: python /app/manage.py runserver 0:7001
-
-
   postgres:
     container_name: postgres
     restart: always
     image: postgres:latest
-#    volumes_from:
-#      - data
+    volumes:
+      - type: volume
+        source: database
+        target: /var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=pwd
       - POSTGRES_USER=tradeuser

@@ -22,8 +22,17 @@ lint: compose_build
 check: compose_build lint test
 	echo "Success"
 
-migrate: compose_build
+migrate:
 	docker-compose run trade_bot python manage.py migrate
+
+makemigrations:
+	docker-compose run trade_bot python manage.py makemigrations
 
 shell: compose_build
 	docker-compose run trade_bot python manage.py shell
+
+connect_bot:
+	docker-compose run trade_bot python manage.py connect_bot
+
+manage_help:
+	docker-compose run trade_bot python manage.py help
