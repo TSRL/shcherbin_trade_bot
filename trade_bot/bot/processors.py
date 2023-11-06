@@ -48,8 +48,9 @@ async def message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         if first_message == "BUY":
             if len(elements) != 3:
                 raise WrongCommand()
-            logger.info("attempting purchase operation")
             token_elements = elements[2].split('/')
+            if len(token_elements) != 2:
+                raise WrongCommand()
             response_message = await sync_to_async(attempt_purchase)(
                 selling_token=token_elements[1],
                 buying_token=token_elements[0],
@@ -61,8 +62,9 @@ async def message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         elif first_message == "SELL":
             if len(elements) != 3:
                 raise WrongCommand()
-            logger.info("attempting selling operation")
             token_elements = elements[2].split('/')
+            if len(token_elements) != 2:
+                raise WrongCommand()
             response_message = await sync_to_async(attempt_sell)(
                 selling_token=token_elements[0],
                 buying_token=token_elements[1],
@@ -72,13 +74,11 @@ async def message(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 price_fetcher=PriceFetcherSwapZone(),
             )
         elif first_message == "REPORT":
-            logger.info("generating PNL report")
             response_message = await sync_to_async(generate_report)(
                 chat=current_chat,
                 price_fetcher=PriceFetcherSwapZone()
             )
         else:
-            logger.info("registering a new request")
             new_request = ArbitraryRequest(
                 message=user_message,
                 chat=current_chat,

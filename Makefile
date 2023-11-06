@@ -1,8 +1,8 @@
 build:
 	docker build . -t trade_bot:latest
 
-compose_build:
-	docker-compose build
+up_dev:
+	docker-compose -f docker-compose-dev.yaml up
 
 up:
 	docker-compose up
@@ -10,16 +10,19 @@ up:
 upd:
 	docker-compose up -d
 
+down_dev:
+	docker-compose -f docker-compose-dev.yaml down
+
 down:
 	docker-compose down
 
-test: compose_build
-	docker-compose run trade_bot python /app/manage.py test
+test:
+	docker-compose -f docker-compose-dev.yaml run trade_bot python /app/manage.py test
 
-lint: compose_build
+lint:
 	docker-compose run trade_bot flake8 .
 
-check: compose_build lint test
+check: lint test
 	echo "Success"
 
 migrate:

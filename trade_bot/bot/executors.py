@@ -25,21 +25,9 @@ class DealExecutorImitator(DealExecutor):
         return True
 
 
-class DealExecutorSuccessful(DealExecutor):
-
-    def execute_trade(self, sell, buy, amount_sell):
-        return True
-
-
 class PriceFetcher:
 
     @abstractmethod
-    def request_price(self, sell, buy, amount_sell=1):
-        return 1
-
-
-class PriceFetcherMock(PriceFetcher):
-
     def request_price(self, sell, buy, amount_sell=1):
         return 1
 
