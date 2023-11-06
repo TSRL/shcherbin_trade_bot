@@ -20,6 +20,7 @@ class TradeRequest(models.Model):
     amount_purchase = models.FloatField(null=True)
     price = models.FloatField(null=True)
     finished = models.BooleanField(null=False)
+    finished_timestamp = models.DateTimeField(null=True)
     successful = models.BooleanField(null=False)
     chat = models.ForeignKey(Chat, on_delete=models.CASCADE, null=False)
 

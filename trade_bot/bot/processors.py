@@ -73,7 +73,10 @@ async def message(update: Update, context: ContextTypes.DEFAULT_TYPE):
             )
         elif first_message == "REPORT":
             logger.info("generating PNL report")
-            response_message = generate_report(current_chat)
+            response_message = await sync_to_async(generate_report)(
+                chat=current_chat,
+                price_fetcher=PriceFetcherSwapZone()
+            )
         else:
             logger.info("registering a new request")
             new_request = ArbitraryRequest(

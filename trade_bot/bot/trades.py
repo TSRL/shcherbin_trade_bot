@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.core.exceptions import ObjectDoesNotExist
 
 from bot.models import TradeRequest, Balance
@@ -43,6 +45,7 @@ def attempt_purchase(
     request.finished = True
     request.price = price
     request.amount_sell = price * amount_purchase
+    request.finished_timestamp = datetime.now()
     request.save()
 
     if result:
@@ -87,12 +90,13 @@ def attempt_sell(
     if selling_balance.value < amount_sell:
         raise InsufficientBalance
 
-    price = price_fetcher.request_price(selling_token, buying_token)
+    amount_purchase = price_fetcher.request_price(selling_token, buying_token, amount_sell)
     result = deal_executor.execute_trade(selling_token, buying_token, amount_sell)
     request.successful = result
     request.finished = True
-    request.price = price
-    request.amount_purchase = price * amount_sell
+    request.price = amount_purchase / amount_sell
+    request.amount_purchase = amount_purchase
+    request.finished_timestamp = datetime.now()
     request.save()
 
     if result:
@@ -101,7 +105,7 @@ def attempt_sell(
             buying_balance = Balance.objects.get(chat=chat.chat_id, coin=buying_token)
         except ObjectDoesNotExist:
             buying_balance = Balance(chat=chat, coin=buying_token, value=0)
-        buying_balance.value += amount_sell * price
+        buying_balance.value += amount_purchase
         selling_balance.save()
         buying_balance.save()
         response_message = f'Your trade wass successfully executed, your new balances: {selling_token}:{selling_balance.value}, {buying_token}:{buying_balance.value}' # NOQA
